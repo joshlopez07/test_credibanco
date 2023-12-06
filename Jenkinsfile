@@ -46,7 +46,6 @@ pipeline {
         stage('Analizar Código con SonarQube') {
             steps {
                 // Analizar código con SonarQube
-                dir("gs-spring-boot-complete") {
                     script {
                         withSonarQubeEnv('SonarQube_Server') {
                             //sh 'mvn verify sonar:sonarr' // Asegúrate de tener configurado SonarQube en tu proyecto
@@ -55,7 +54,6 @@ pipeline {
                         }
                     }
                     sh "ls -la"
-                }
             }
         }
 
