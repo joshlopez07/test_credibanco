@@ -52,15 +52,18 @@ pipeline {
             }
         }
 
-        /* stage('Construir Imagen Docker') {
+        stage('OWASP Dependency-Check Vulnerabilities') {
             steps {
-                // Construir la imagen Docker
-                script {
-                    sh 'docker build -t ${DOCKERHUB_REPO} .'
-                }
+                dependencyCheck additionalArguments: ''' 
+                    -o './'
+                    -s './'
+                    -f 'ALL' 
+                    --prettyPrint''', odcInstallation: 'OWASP Dependency-Check Vulnerabilities'
+        
+                dependencyCheckPublisher pattern: 'dependency-check-report.xml'
             }
-        } */
-
+        }
+        
         stage('Construir y Subir Imagen a DockerHub') {
             steps {
                 // Subir la imagen Docker a DockerHub
