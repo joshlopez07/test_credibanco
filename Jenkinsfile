@@ -89,7 +89,7 @@ pipeline {
                             aws elasticbeanstalk create-application-version \
                                 --application-name novatec-credibanco \
                                 --version-label v-${BUILD_NUMBER} \
-                                --source-bundle S3Bucket=elasticbeanstalk-us-east-1-898852446082, S3Key=test-credibanco/${BUILD_NUMBER}.zip
+                                --source-bundle S3Bucket=elasticbeanstalk-us-east-1-898852446082, S3Key=test-credibanco-${BUILD_NUMBER}.zip
 
                             aws elasticbeanstalk update-environment \
                                 --application-name novatec-credibanco \
