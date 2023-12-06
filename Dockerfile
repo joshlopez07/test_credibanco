@@ -14,7 +14,7 @@ RUN mvn dependency:go-offline
 COPY src ./src
 
 # Compila la aplicación
-RUN mvn package
+RUN mvn clean install
 
 # Segunda etapa de la construcción de la imagen
 FROM openjdk:11-jre-slim
