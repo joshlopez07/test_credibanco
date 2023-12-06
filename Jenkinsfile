@@ -85,9 +85,13 @@ pipeline {
             steps {
                 script {
                     // Despliega la imagen Docker en Elastic Beanstalk
-                    withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: "AWS-Credentials", accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]){
-                        sh script: "aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID | aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY | aws configure set default.region ${AWS_REGION}", label: "Autenticando a Jenkins en AWS"
+                    /*withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: "AWS-Credentials", accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]){
+                        sh script: "aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID | aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY | aws configure set default.region ${AWS_REGION}", label: "Autenticando a Jenkins en AWS"*/
                         sh """
+                            aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+                            aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+                            aws configure set default.region $AWS_REGION
+
                             aws elasticbeanstalk create-application-version \
                                 --application-name novatec-credibanco \
                                 --version-label v-${BUILD_NUMBER} \
