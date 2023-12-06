@@ -1,5 +1,5 @@
 # Utiliza una imagen base de Maven
-FROM maven:3.8.4-openjdk-11 AS builder
+FROM maven:3.8.4-openjdk-17-slim AS builder
 
 # Establece el directorio de trabajo dentro de la imagen
 WORKDIR /usr/src/app
@@ -14,10 +14,10 @@ RUN mvn dependency:go-offline
 COPY src ./src
 
 # Compila la aplicación
-RUN mvn clean install
+RUN mvn package
 
 # Segunda etapa de la construcción de la imagen
-FROM openjdk:11-jre-slim
+FROM openjdk:17-jdk-slim
 
 # Establece el directorio de trabajo dentro de la nueva imagen
 WORKDIR /usr/src/app
