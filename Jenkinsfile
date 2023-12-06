@@ -47,7 +47,7 @@ pipeline {
             steps {
                 // Analizar código con SonarQube
                     script {
-                        withSonarQubeEnv('SonarQube_Server') {
+                        withSonarQubeEnv('SonarCloud') {
                             //sh 'mvn verify sonar:sonarr' // Asegúrate de tener configurado SonarQube en tu proyecto
                             sh 'mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=joshlopez07_test_credibanco'
                             //sh './gradlew sonar'
