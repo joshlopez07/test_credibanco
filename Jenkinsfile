@@ -52,21 +52,22 @@ pipeline {
             }
         }
 
-        stage('Construir Imagen Docker') {
+        /* stage('Construir Imagen Docker') {
             steps {
                 // Construir la imagen Docker
                 script {
                     sh 'docker build -t ${DOCKERHUB_REPO} .'
                 }
             }
-        }
+        } */
 
-        stage('Subir Imagen a DockerHub') {
+        stage('Construir y Subir Imagen a DockerHub') {
             steps {
                 // Subir la imagen Docker a DockerHub
                 script {
                     withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', passwordVariable: 'DOCKERHUB_PASSWORD', usernameVariable: 'DOCKERHUB_USERNAME')]) {
                         sh 'docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_PASSWORD}'
+                        sh 'docker build -t ${DOCKERHUB_REPO} .'
                         sh 'docker push ${DOCKERHUB_REPO}'
                     }
                 }
