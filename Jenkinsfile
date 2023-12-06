@@ -22,8 +22,11 @@ pipeline {
         stage('Build con Maven') {
             steps {
                 // Realizar build con Maven
-                script {
-                    sh 'mvn clean install'
+                dir("gs-spring-boot-complete") {
+                    script {
+                        sh 'mvn clean install'
+                    }
+                    sh "ls -la"
                 }
             }
         }
@@ -31,8 +34,11 @@ pipeline {
         stage('Ejecutar Pruebas Unitarias') {
             steps {
                 // Ejecutar pruebas unitarias con JUnit
-                script {
-                    sh 'mvn test' // Asegúrate de tener configurado Maven en tu proyecto
+                dir("gs-spring-boot-complete") {
+                    script {
+                        sh 'mvn test' // Asegúrate de tener configurado Maven en tu proyecto
+                    }
+                    sh "ls -la"
                 }
             }
         }
@@ -40,12 +46,15 @@ pipeline {
         stage('Analizar Código con SonarQube') {
             steps {
                 // Analizar código con SonarQube
-                script {
-                    withSonarQubeEnv('SonarQube_Server') {
-                        sh 'mvn verify sonar:sonarr' // Asegúrate de tener configurado SonarQube en tu proyecto
-                        //sh 'mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=joshlopez07_test_credibanco'
-                        //sh './gradlew sonar'
+                dir("gs-spring-boot-complete") {
+                    script {
+                        withSonarQubeEnv('SonarQube_Server') {
+                            sh 'mvn verify sonar:sonarr' // Asegúrate de tener configurado SonarQube en tu proyecto
+                            //sh 'mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=joshlopez07_test_credibanco'
+                            //sh './gradlew sonar'
+                        }
                     }
+                    sh "ls -la"
                 }
             }
         }
