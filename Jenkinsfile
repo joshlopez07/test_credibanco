@@ -89,7 +89,7 @@ pipeline {
                         // Empaqueta la imagen Docker y súbelo a Amazon S3
                         sh """
                             docker save -o image.tar ${DOCKER_IMAGE_NAME}
-                            aws s3 cp timage.tar s3://${S3_BUCKET}/test-credibanco-${BUILD_NUMBER}.tar
+                            aws s3 cp image.tar s3://${S3_BUCKET}/test-credibanco-${BUILD_NUMBER}.tar
                         """
                         sh """
                             aws elasticbeanstalk create-application-version \
