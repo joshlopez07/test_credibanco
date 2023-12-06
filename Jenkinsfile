@@ -5,6 +5,7 @@ pipeline {
         // Define las variables de entorno necesarias
         GITHUB_REPO = 'https://github.com/joshlopez07/test_credibanco.git'
         DOCKERHUB_REPO = 'joshlopez07/test-credibanco'
+        SONAR_TOKEN = '44e6312071241f6f998e64469a745e5ff14fae45'
     }
 
     stages {
@@ -15,6 +16,7 @@ pipeline {
                     git branch: 'develop', url: "${GITHUB_REPO}", credentialsId: 'github_credentials'
 
                 }
+                sh "ls -la"
             }
         }
         stage('Build con Maven') {
@@ -40,7 +42,9 @@ pipeline {
                 // Analizar código con SonarQube
                 script {
                     withSonarQubeEnv('SonarQube_Server') {
-                        sh 'mvn sonar:sonar' // Asegúrate de tener configurado SonarQube en tu proyecto
+                        sh 'mvn verify sonar:sonarr' // Asegúrate de tener configurado SonarQube en tu proyecto
+                        //sh 'mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=joshlopez07_test_credibanco'
+                        //sh './gradlew sonar'
                     }
                 }
             }
