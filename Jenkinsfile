@@ -9,6 +9,7 @@ pipeline {
     def AWS_REGION = 'us-east-1'
     def ELASTIC_BEANSTALK_ENV_NAME = 'Novatec-credibanco-env'
     def DOCKER_IMAGE_NAME = '${DOCKERHUB_REPO}:latest'
+        S3_BUCKET = 'elasticbeanstalk-us-east-1-898852446082'
     }
 
     stages {
@@ -85,11 +86,16 @@ pipeline {
                     // Despliega la imagen Docker en Elastic Beanstalk
                     withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: "AWS-Credentials", accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]){
                         sh script: "aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID | aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY | aws configure set default.region ${AWS_REGION}", label: "Autenticando a Jenkins en AWS"
+                        // Empaqueta la imagen Docker y súbelo a Amazon S3
+                        sh """
+                            docker save -o image.tar ${DOCKER_IMAGE_NAME}
+                            aws s3 cp timage.tar s3://${S3_BUCKET}/test-credibanco-${BUILD_NUMBER}.tar
+                        """
                         sh """
                             aws elasticbeanstalk create-application-version \
                                 --application-name novatec-credibanco \
                                 --version-label v-${BUILD_NUMBER} \
-                                --source-bundle S3Bucket=elasticbeanstalk-us-east-1-898852446082,S3Key=test-credibanco-${BUILD_NUMBER}.zip
+                                --source-bundle S3Bucket=${S3_BUCKET},S3Key=test-credibanco-${BUILD_NUMBER}.tar
 
                             aws elasticbeanstalk update-environment \
                                 --application-name novatec-credibanco \
