@@ -22,40 +22,33 @@ pipeline {
         stage('Build con Maven') {
             steps {
                 // Realizar build con Maven
-                dir("gs-spring-boot-complete") {
-                    script {
-                        sh 'mvn clean install'
-                    }
-                    sh "ls -la"
+                script {
+                    sh 'mvn clean install'
                 }
+                sh "ls -la"
             }
         }
       
         stage('Ejecutar Pruebas Unitarias') {
             steps {
                 // Ejecutar pruebas unitarias con JUnit
-                dir("gs-spring-boot-complete") {
-                    script {
-                        sh 'mvn test' // Asegúrate de tener configurado Maven en tu proyecto
-                    }
-                    sh "ls -la"
+                script {
+                    sh 'mvn test' // Asegúrate de tener configurado Maven en tu proyecto
                 }
+                sh "ls -la"
             }
         }
 
         stage('Analizar Código con SonarQube') {
             steps {
                 // Analizar código con SonarQube
-                dir("gs-spring-boot-complete") {
-                    script {
-                        withSonarQubeEnv('SonarCloud') {
-                            //sh 'mvn verify sonar:sonarr' // Asegúrate de tener configurado SonarQube en tu proyecto
-                            sh 'mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=joshlopez07_test_credibanco'
-                            //sh './gradlew sonar'
-                        }
+                script {
+                    withSonarQubeEnv('SonarCloud') {
+                        // Asegúrate de tener configurado SonarQube en tu proyecto
+                        sh 'mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=joshlopez07_test_credibanco'
                     }
-                    sh "ls -la"
                 }
+                sh "ls -la"
             }
         }
 
