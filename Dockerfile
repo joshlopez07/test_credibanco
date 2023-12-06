@@ -1,5 +1,5 @@
 # Utiliza una imagen base de Maven
-FROM maven:3.8.7-openjdk-17 AS builder
+FROM maven:3.8.7-openjdk-17-oracle AS builder
 
 # Establece el directorio de trabajo dentro de la imagen
 WORKDIR /usr/src/app
