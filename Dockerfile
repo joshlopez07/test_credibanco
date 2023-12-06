@@ -1,5 +1,5 @@
 # Utiliza una imagen base de Maven
-FROM maven:3.8.7-openjdk-11 AS builder
+FROM maven:3.8.7-openjdk-17.0.9+9-Debian-1deb12u1 AS builder
 
 # Establece el directorio de trabajo dentro de la imagen
 WORKDIR /usr/src/app
@@ -17,7 +17,7 @@ COPY src ./src
 RUN mvn package
 
 # Segunda etapa de la construcción de la imagen
-FROM openjdk:11-jre-slim
+FROM openjdk:17.0.9+9-Debian-1deb12u1
 
 # Establece el directorio de trabajo dentro de la nueva imagen
 WORKDIR /usr/src/app
