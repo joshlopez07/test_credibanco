@@ -17,7 +17,7 @@ COPY src ./src
 RUN mvn package
 
 # Segunda etapa de la construcción de la imagen
-FROM openjdk:17.0.9+9-Debian-1deb12u1
+FROM openjdk:17-jre-slim
 
 # Establece el directorio de trabajo dentro de la nueva imagen
 WORKDIR /usr/src/app
