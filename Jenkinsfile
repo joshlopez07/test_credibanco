@@ -10,8 +10,8 @@ pipeline {
         ELASTIC_BEANSTALK_ENV_NAME = 'Novatec-env'
         DOCKER_IMAGE_NAME = '${DOCKERHUB_REPO}:latest'
         S3_BUCKET = 'elasticbeanstalk-us-east-1-898852446082'
-        JMETER_SCRIPT = 'path/a/tu/script.jmx'
-        JMETER_HOME = '/ruta/a/tu/apache-jmeter'
+        JMETER_SCRIPT = '/root/jenkins/apache-jmeter-5.4.1/script.jmx'
+        JMETER_HOME = '/root/jenkins/apache-jmeter-5.4.1/apache-jmeter'
     }
 
     stages {
@@ -112,14 +112,14 @@ pipeline {
             steps {
                 script {
 
-                    // Descarga JMeter en tu entorno de Jenkins
+                    /*/ Descarga JMeter en tu entorno de Jenkins
                     sh """
                         wget -O apache-jmeter.tgz https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.4.1.tgz
                         tar -xzf apache-jmeter.tgz
                     """
 
                     // Copia tu script JMeter al entorno de Jenkins
-                    sh "cp ${JMETER_SCRIPT} ${JMETER_HOME}/bin"
+                    sh "cp ${JMETER_SCRIPT} ${JMETER_HOME}/bin" */
 
                     // Ejecuta JMeter en Elastic Beanstalk
                     sh """
