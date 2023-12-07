@@ -27,7 +27,8 @@ WORKDIR /usr/src/app
 COPY --from=builder /usr/src/app/target/*.jar app.jar
 
 # Expone el puerto en el que la aplicación se ejecutará
-EXPOSE 8080
+#EXPOSE 8080
+EXPOSE 5000
 
 # Comando para ejecutar la aplicación al iniciar el contenedor
 CMD ["java", "-jar", "app.jar"]
