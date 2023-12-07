@@ -43,10 +43,10 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @SpringBootApplication
-public class BienvenidoApplication {
+public class Application {
 
     public static void main(String[] args) {
-        SpringApplication.run(BienvenidoApplication.class, args);
+        SpringApplication.run(Application.class, args);
     }
 
     @Controller
