@@ -7,7 +7,7 @@ pipeline {
         DOCKERHUB_REPO = 'joshlopez07/test-credibanco'
         SONAR_TOKEN = '44e6312071241f6f998e64469a745e5ff14fae45'
     def AWS_REGION = 'us-east-1'
-    def ELASTIC_BEANSTALK_ENV_NAME = 'Novatec-credibanco-env'
+    def ELASTIC_BEANSTALK_ENV_NAME = 'Novatec-env'
     def DOCKER_IMAGE_NAME = '${DOCKERHUB_REPO}:latest'
         S3_BUCKET = 'elasticbeanstalk-us-east-1-898852446082'
     }
@@ -93,19 +93,16 @@ pipeline {
                         """
                         sh """
                             aws elasticbeanstalk create-application-version \
-                                --application-name novatec-credibanco \
+                                --application-name novatec \
                                 --version-label v-${BUILD_NUMBER} \
                                 --source-bundle S3Bucket=${S3_BUCKET},S3Key=test-credibanco-${BUILD_NUMBER}.tar
 
                             aws elasticbeanstalk update-environment \
-                                --application-name novatec-credibanco \
+                                --application-name novatec \
                                 --environment-name $ELASTIC_BEANSTALK_ENV_NAME \
                                 --version-label v-${BUILD_NUMBER}
                             """
                     }
-                    /* aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
-                            aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
-                            aws configure set default.region $AWS_REGION */
                 }
             }
         }
