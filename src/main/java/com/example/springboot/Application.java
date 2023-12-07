@@ -50,7 +50,7 @@ public class Application {
     }
 
     @Controller
-    public static class WelcomeController {
+    public static class HelloController {
 
         @GetMapping("/")
         public String welcome(Model model) {
