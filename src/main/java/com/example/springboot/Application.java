@@ -1,4 +1,4 @@
-package com.example.springboot;
+/* package com.example.springboot;
 
 import java.util.Arrays;
 
@@ -30,4 +30,41 @@ public class Application {
 		};
 	}
 
+}*/
+package com.tu.paquete;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+@SpringBootApplication
+public class BienvenidoApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(BienvenidoApplication.class, args);
+    }
+
+    @Controller
+    public static class WelcomeController {
+
+        @GetMapping("/")
+        public String welcome(Model model) {
+            // Obtener la fecha y hora actuales
+            LocalDateTime now = LocalDateTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+            String formattedDateTime = now.format(formatter);
+
+            // Agregar datos al modelo
+            model.addAttribute("message", "¡Bienvenido!");
+            model.addAttribute("currentDateTime", formattedDateTime);
+
+            // Devolver el nombre de la plantilla (template)
+            return "welcome";
+        }
+    }
 }
