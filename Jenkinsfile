@@ -88,14 +88,14 @@ pipeline {
                         sh script: "aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID | aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY | aws configure set default.region ${AWS_REGION}", label: "Autenticando a Jenkins en AWS"
                         // Empaqueta la imagen Docker y súbelo a Amazon S3
                         sh """
-                            docker save -o image.tar ${DOCKER_IMAGE_NAME}
-                            aws s3 cp image.tar s3://${S3_BUCKET}/test-credibanco-${BUILD_NUMBER}.tar
+                            docker save -o image.zip ${DOCKER_IMAGE_NAME}
+                            aws s3 cp image.zip s3://${S3_BUCKET}/test-credibanco-${BUILD_NUMBER}.zip
                         """
                         sh """
                             aws elasticbeanstalk create-application-version \
                                 --application-name novatec \
                                 --version-label v-${BUILD_NUMBER} \
-                                --source-bundle S3Bucket=${S3_BUCKET},S3Key=test-credibanco-${BUILD_NUMBER}.tar
+                                --source-bundle S3Bucket=${S3_BUCKET},S3Key=test-credibanco-${BUILD_NUMBER}.zip
 
                             aws elasticbeanstalk update-environment \
                                 --application-name novatec \
