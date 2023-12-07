@@ -127,7 +127,7 @@ pipeline {
                         aws elasticbeanstalk create-environment \
                             --application-name novatec \
                             --environment-name ${ELASTIC_BEANSTALK_ENV_NAME} \
-                            --solution-stack-name "64bit Amazon Linux 2 v4.2.2 running Multi-container Docker 21.10.0 (Generic)"
+                            --solution-stack-name "64bit Amazon Linux 2 v5.4.0 running Multi-container Docker 21.10.0"
 
                         aws elasticbeanstalk update-environment \
                             --application-name novatec \
