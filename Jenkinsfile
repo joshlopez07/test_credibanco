@@ -6,10 +6,12 @@ pipeline {
         GITHUB_REPO = 'https://github.com/joshlopez07/test_credibanco.git'
         DOCKERHUB_REPO = 'joshlopez07/test-credibanco'
         SONAR_TOKEN = '44e6312071241f6f998e64469a745e5ff14fae45'
-    def AWS_REGION = 'us-east-1'
-    def ELASTIC_BEANSTALK_ENV_NAME = 'Novatec-env'
-    def DOCKER_IMAGE_NAME = '${DOCKERHUB_REPO}:latest'
+        AWS_REGION = 'us-east-1'
+        ELASTIC_BEANSTALK_ENV_NAME = 'Novatec-env'
+        DOCKER_IMAGE_NAME = '${DOCKERHUB_REPO}:latest'
         S3_BUCKET = 'elasticbeanstalk-us-east-1-898852446082'
+        JMETER_SCRIPT = 'path/a/tu/script.jmx'
+        JMETER_HOME = '/ruta/a/tu/apache-jmeter'
     }
 
     stages {
@@ -103,6 +105,41 @@ pipeline {
                                 --version-label v-${BUILD_NUMBER}
                             """
                     }
+                }
+            }
+        }
+        stage('Ejecutar JMeter en Elastic Beanstalk') {
+            steps {
+                script {
+
+                    // Descarga JMeter en tu entorno de Jenkins
+                    sh """
+                        wget -O apache-jmeter.tgz https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.4.1.tgz
+                        tar -xzf apache-jmeter.tgz
+                    """
+
+                    // Copia tu script JMeter al entorno de Jenkins
+                    sh "cp ${JMETER_SCRIPT} ${JMETER_HOME}/bin"
+
+                    // Ejecuta JMeter en Elastic Beanstalk
+                    sh """
+                        aws configure set default.region ${AWS_REGION}
+                        aws elasticbeanstalk create-environment \
+                            --application-name novatec \
+                            --environment-name ${ELASTIC_BEANSTALK_ENV_NAME} \
+                            --solution-stack-name "64bit Amazon Linux 2 v4.2.2 running Multi-container Docker 21.10.0 (Generic)"
+
+                        aws elasticbeanstalk update-environment \
+                            --application-name novatec \
+                            --environment-name ${ELASTIC_BEANSTALK_ENV_NAME} \
+                            --option-settings Namespace=aws:elasticbeanstalk:application:environment,OptionName=JMETER_HOME,Value=${JMETER_HOME}
+
+                        aws elasticbeanstalk restart-app-server \
+                            --environment-name ${ELASTIC_BEANSTALK_ENV_NAME}
+                    """
+
+                    // Ejecuta JMeter en Elastic Beanstalk
+                    sh "${JMETER_HOME}/bin/jmeter -n -t ${JMETER_SCRIPT}"
                 }
             }
         }
